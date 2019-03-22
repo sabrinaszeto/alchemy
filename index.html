@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>New Haven Street Trees</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<style>
+#menu {
+position: absolute;
+background: #fff;
+padding: 10px;
+font-family: 'Open Sans', sans-serif;
+}
+</style>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.6/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.6/mapbox-gl-geocoder.css' type='text/css' />
+<div id='map'></div>
+
+<div id='menu'>
+<input id='cjtizxdsp94hz1fpi6vdpvhw2' type='radio' name='rtoggle' value='dark'>
+<label for='dark'>dark</label>
+<input id='cjtiztbj094ea1fpiov7xxsmn' type='radio' name='rtoggle' value='satellite'>
+<label for='satellite'>satellite</label>
+</div>
+
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmlza2VrYXJ0IiwiYSI6ImNpdWl4eWJoNjAwMGcyenFpZnFrOTFnMW4ifQ.YSvHVXX8b9j70FNaxMO8sA';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/fiskekart/cjtizxdsp94hz1fpi6vdpvhw2',
+    center: [-72.923471, 41.317190],
+    zoom: 16.8
+});
+map.addControl(new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken
+}));
+
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+ 
+function switchLayer(layer) {
+var layerId = layer.target.id;
+map.setStyle('mapbox://styles/fiskekart/' + layerId);
+}
+ 
+for (var i = 0; i < inputs.length; i++) {
+inputs[i].onclick = switchLayer;
+}
+</script>
+
+</body>
+</html>
