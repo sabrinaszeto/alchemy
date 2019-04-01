@@ -73,7 +73,7 @@ map.on('click', function(e) {
 
   var popup = new mapboxgl.Popup({ offset: [0, -15] })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+    .setHTML('<h3>' + feature.properties.Address + '</h3><p>' + feature.properties.OBJECTID + '</p>')
     .setLngLat(feature.geometry.coordinates)
     .addTo(map);
 });    
