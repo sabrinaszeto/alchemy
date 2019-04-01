@@ -54,10 +54,29 @@ function switchLayer(layer) {
 var layerId = layer.target.id;
 map.setStyle('mapbox://styles/fiskekart/' + layerId);
 }
- 
+
 for (var i = 0; i < inputs.length; i++) {
 inputs[i].onclick = switchLayer;
 }
+
+// Add popups
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['kepler-gl_NewHavenStreetTrees-9abna7'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+    .setLngLat(feature.geometry.coordinates)
+    .addTo(map);
+});    
 </script>
 
 </body>
