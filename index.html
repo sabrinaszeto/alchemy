@@ -28,20 +28,20 @@ font-family: 'Open Sans', sans-serif;
     
 <div id='menu'>
 <input id='cjx1mmcxw29e71cnwnvqq80ra?fresh=true' type='radio' name='rtoggle' value='DBHdark'>
-<label for='DBHdark'>Diameter (dark)</label>
+<label for='DBHdark'>Diameter</label>
 <input id='cjx1mdx4700i21cnvjpi87t8b?fresh=true' type='radio' name='rtoggle' value='DBHsatellite'>
 <label for='DBHsatellite'>Diameter (satellite)</label>
 <input id='cjx1thidp05al1cqmefska25z?fresh=true' type='radio' name='rtoggle' value='family'>
 <label for='family'>Family</label>
 <input id='cjx1oh6nd00w71cpfemid4veo?fresh=true' type='radio' name='rtoggle' value='genus'>
-<label for='genus'>Genus</label>
+<label for='genus'>Top 10 Genus</label>
 </div>
  
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmlza2VrYXJ0IiwiYSI6ImNpdWl4eWJoNjAwMGcyenFpZnFrOTFnMW4ifQ.YSvHVXX8b9j70FNaxMO8sA';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/fiskekart/cjtizxdsp94hz1fpi6vdpvhw2?fresh=true',
+    style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
     center: [-72.923471, 41.317190],
     zoom: 16.8
 });
@@ -64,7 +64,7 @@ inputs[i].onclick = switchLayer;
 // Add popups
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
-    layers: ['kepler-gl_NewHavenStreetTrees-9abna7'] // replace this with the name of the layer
+    layers: ['DBHdark', 'DBHsatellite', 'family', 'genus'] // replace this with the name of the layer
   });
 
   if (!features.length) {
@@ -75,8 +75,9 @@ map.on('click', function(e) {
 
   var popup = new mapboxgl.Popup({ offset: [0, -15] })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML('<h3>' + feature.properties.Address + '</h3><p>' + feature.properties.OBJECTID + '</p>')
+    .setHTML('<h3>' + feature.properties.AddressFul + '</h3><p>' + feature.properties.Genus + ' ' + feature.properties.Species '</p>')
     .setLngLat(feature.geometry.coordinates)
+    .setMaxWidth("300px")
     .addTo(map);
 });    
 </script>
