@@ -47,6 +47,12 @@ var map = new mapboxgl.Map({
 });
 map.addControl(new MapboxGeocoder({
     accessToken: mapboxgl.accessToken
+    // limit results to USA
+    countries: 'us'
+    // further limit results to the geographic bounds representing the region of
+    // New Haven City
+    bbox: [-72.998048,41.246425,-72.860309,41.35039],
+ 
 }));
 
 var layerList = document.getElementById('menu');
