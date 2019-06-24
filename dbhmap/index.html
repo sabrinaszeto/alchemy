@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,7 +83,7 @@ p {
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmlza2VrYXJ0IiwiYSI6ImNpdWl4eWJoNjAwMGcyenFpZnFrOTFnMW4ifQ.YSvHVXX8b9j70FNaxMO8sA';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
+    style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true'
 });
 map.on('load', function() {
     
@@ -112,8 +113,9 @@ map.on('load', function() {
         layers: ['nhstreettrees']
       });
       if (trees.length > 0) {
-        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+        document.getElementById('map-overlay').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
       } else {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         document.getElementById('map-overlay').innerHTML = '<h2>New Haven Street Trees</h2><p>Hover over a tree!</p>';
@@ -123,6 +125,9 @@ map.on('load', function() {
 =======
         document.getElementById('features').innerHTML = '<h2>New Haven Street Trees</h2><p>Hover over a tree!</p>';
 >>>>>>> parent of 3537550... Changed back argument of document.GetElementbyID
+=======
+        document.getElementById('map-overlay').innerHTML = '<h3>New Haven Street Trees</h3><p>Hover over a tree!</p>';
+>>>>>>> 101c0abdb460f50406816d20561e73cf348dfb84
       }
     });
     
@@ -136,11 +141,9 @@ map.on('load', function() {
         countries: 'us',
         // further limit results to the geographic bounds representing the region of
         // New Haven City
-        bbox: [-72.998048,41.246425,-72.860309,41.35039]
-        },
+        bbox: [-72.998048,41.246425,-72.860309,41.35039],
         mapboxgl: mapboxgl
-    }));
-});
+	}));
 </script>
 </body>
 </html>
