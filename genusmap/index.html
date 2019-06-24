@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>New Haven Street Trees by Diameter</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2,
+h3 {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+/**
+* Create a position for the map
+* on the page */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/**
+* Set rules for how the map overlays
+* (information box and legend) will be displayed
+* on the page. */
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 1;
+  background: rgba(255, 255, 255, 0.8);
+  margin-left: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#features {
+  top: 0;
+  height: 100px;
+  margin-top: 20px;
+  width: 250px;
+}
+
+#legend {
+  padding: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  height: 200px;
+  margin-bottom: 40px;
+  width: 100px;
+}
+
+.legend-key {
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+</style>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+<div id='map'></div>
+<div class='map-overlay' id='features'><h2>New Haven Street Trees</h2><div id='pd'><p>Hover over a tree!</p></div></div>
+<div class='map-overlay' id='legend'><p><h3>Diameter (inches)</h3></p></div>
+ 
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmlza2VrYXJ0IiwiYSI6ImNpdWl4eWJoNjAwMGcyenFpZnFrOTFnMW4ifQ.YSvHVXX8b9j70FNaxMO8sA';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
+});
+
+// Add geocoder
+    map.addControl(new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        // limit results to USA
+        countries: 'us',
+        // further limit results to the geographic bounds representing the region of
+        // New Haven City
+        bbox: [-72.998048,41.246425,-72.860309,41.35039],
+        mapboxgl: mapboxgl
+    }));
+
+map.on('load', function() {
+    
+    // Create arrays of intervals and colors
+    var layers = ['0', '1-10', '10-20','20-30','30-40','40-60','60-90+'];
+    var colors = ['#ffffff','#ffffcc','#c7e9b4','#7fcdbb','#41b6c4',
+                  '#1d91c0','#225ea8','#0c2c84'];
+    
+    //Add a legend
+    for (i = 0; i < layers.length; i++) {
+      var layer = layers[i];
+      var color = colors[i];
+      var item = document.createElement('div');
+      var key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = color;
+
+      var value = document.createElement('span');
+      value.innerHTML = layer;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+    }
+    
+    // Add the information window
+    map.on('mousemove', function(e) {
+      var trees = map.queryRenderedFeatures(e.point, {
+        layers: ['nhstreettrees']
+      });
+
+      if (trees.length > 0) {
+        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+      } else {
+        document.getElementById('features').innerHTML = '<h2>New Haven Street Trees</h2><p>Hover over a tree!</p>';
+      }
+    });
+    
+    // Cursor
+    map.getCanvas().style.cursor = 'default';
+
+});
+
+</script>
+
+</body>
+</html>
