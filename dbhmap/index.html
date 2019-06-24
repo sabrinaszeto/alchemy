@@ -88,18 +88,7 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
 });
 map.on('load', function() {
-    // Add geocoder
-    map.addControl(new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        // limit results to USA
-        countries: 'us',
-        // further limit results to the geographic bounds representing the region of
-        // New Haven City
-        bbox: [-72.998048,41.246425,-72.860309,41.35039]
-        },
-        mapboxgl: mapboxgl
-    }));
-    
+
     // Create arrays of intervals and colors
     var layers = ['0', '1-10', '10-20','20-30','30-40','40-60','60-90+'];
     var colors = ['#ffffff','#ffffcc','#c7e9b4','#7fcdbb','#41b6c4',
