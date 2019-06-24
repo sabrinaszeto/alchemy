@@ -126,9 +126,9 @@ map.on('load', function() {
       });
 
       if (trees.length > 0) {
-        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+        document.getElementById('map-overlay').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
       } else {
-        document.getElementById('features').innerHTML = '<p>Hover over a tree!</p>';
+        document.getElementById('map-overlay').innerHTML = '<p>Hover over a tree!</p>';
       }
     });
     
