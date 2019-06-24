@@ -14,23 +14,19 @@ body {
   margin: 0;
   padding: 0;
 }
-
 h2,
 h3 {
   margin: 10px;
   font-size: 1.2em;
 }
-
 h3 {
   font-size: 1em;
 }
-
 p {
   font-size: 0.85em;
   margin: 10px;
   text-align: left;
 }
-
 /**
 * Create a position for the map
 * on the page */
@@ -40,7 +36,6 @@ p {
   bottom: 0;
   width: 100%;
 }
-
 /**
 * Set rules for how the map overlays
 * (information box and legend) will be displayed
@@ -55,14 +50,12 @@ p {
   overflow: auto;
   border-radius: 3px;
 }
-
 #features {
   top: 0;
   height: 100px;
   margin-top: 20px;
   width: 250px;
 }
-
 #legend {
   padding: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -71,7 +64,6 @@ p {
   margin-bottom: 40px;
   width: 100px;
 }
-
 .legend-key {
   display: inline-block;
   border-radius: 20%;
@@ -95,7 +87,6 @@ var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
 });
-
 map.on('load', function() {
     
     // Create arrays of intervals and colors
@@ -111,7 +102,6 @@ map.on('load', function() {
       var key = document.createElement('span');
       key.className = 'legend-key';
       key.style.backgroundColor = color;
-
       var value = document.createElement('span');
       value.innerHTML = layer;
       item.appendChild(key);
@@ -124,7 +114,6 @@ map.on('load', function() {
       var trees = map.queryRenderedFeatures(e.point, {
         layers: ['nhstreettrees']
       });
-
       if (trees.length > 0) {
         document.getElementById('map-overlay').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
       } else {
@@ -143,12 +132,21 @@ map.on('load', function() {
         // further limit results to the geographic bounds representing the region of
         // New Haven City
         bbox: [-72.998048,41.246425,-72.860309,41.35039],
+        // apply a client side filter to further limit results to those strictly within
+        // the city of New Haven
+        filter: function (item) {
+        // returns true if item contains New Haven
+        return item.context.map(function (i) {
+        // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+        // this example attempts to find the `region` named `New Haven`
+        return (i.id.split('.').shift() === 'region' && i.text === 'New Haven');
+        }).reduce(function (acc, cur) {
+        return acc || cur;
+        });
+        },
         mapboxgl: mapboxgl
     }));
-
-
 });
-
 </script>
 
 </body>
