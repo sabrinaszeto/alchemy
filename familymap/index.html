@@ -69,7 +69,7 @@ p {
   line-height: 18px;
   height: 200px;
   margin-bottom: 40px;
-  width: 100px;
+  width: 200px;
 }
 
 .legend-key {
@@ -87,13 +87,13 @@ p {
 
 <div id='map'></div>
 <div class='map-overlay' id='features'><h2>New Haven Street Trees</h2><div id='pd'><p>Hover over a tree!</p></div></div>
-<div class='map-overlay' id='legend'><p><h3>Diameter (inches)</h3></p></div>
+<div class='map-overlay' id='legend'><p><h3>Family</h3></p></div>
  
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmlza2VrYXJ0IiwiYSI6ImNpdWl4eWJoNjAwMGcyenFpZnFrOTFnMW4ifQ.YSvHVXX8b9j70FNaxMO8sA';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
+    style: 'mapbox://styles/fiskekart/cjx1thidp05al1cqmefska25z?fresh=true',
 });
 
 // Add geocoder
@@ -110,9 +110,82 @@ var map = new mapboxgl.Map({
 map.on('load', function() {
     
     // Create arrays of intervals and colors
-    var layers = ['0', '1-10', '10-20','20-30','30-40','40-60','60-90+'];
-    var colors = ['#ffffff','#ffffcc','#c7e9b4','#7fcdbb','#41b6c4',
-                  '#1d91c0','#225ea8','#0c2c84'];
+    var layers =  ["Fabaceae",
+                  "Pinaceae",
+                  "Cupressaceae",
+                  "Rosaceae",
+                  "Betulaceae",
+                  "Fagaceae",
+                  "Sapindaceae",
+                  "Styracaceae",
+                  "Salicaceae",
+                  "Malvaceae",
+                  "Oleaceae",
+                  "Hamamelidaceae",
+                  "Ulmaceae",
+                  "Magnoliaceae",
+                  "Juglandaceae",
+                  "Bignoniaceae",
+                  "Rutaceae",
+                  "Cannabaceae",
+                  "Altingiaceae",
+                  "Anacardiaceae",
+                  "Lauraceae",
+                  "Theaceae",
+                  "Celastraceae",
+                  "Ericaceae",
+                  "Cercidiphyllaceae",
+                  "Eucommiaceae",
+                  "Moraceae",
+                  "Simaroubaceae",
+                  "Nyssaceae",
+                  "Taxaceae",
+                  "Cornaceae",
+                  "Ginkgoaceae",
+                  "Aquifoliaceae",
+                  "Platanaceae",
+                  "Other",
+                ];
+
+
+
+    var colors = [
+                  "#d7ccc8",
+                  "#a1887f",
+                  "#8d6e63",
+                  "#795548",
+                  "#ffe082",
+                  "#ffca28",
+                  "#ffb300",
+                  "#ff8f00",
+                  "#ff6f00",
+                  "#e1bee7",
+                  "#ce93d8",
+                  "#ba68c8",
+                  "#ab47bc",
+                  "#9c27b0",
+                  "#8e24aa",
+                  "#7b1fa2",
+                  "#6a1b9a",
+                  "#4a148c",
+                  "#b3e5fc",
+                  "#81d4fa",
+                  "#4fc3f7",
+                  "#29b6f6",
+                  "#03a9f4",
+                  "#039be5",
+                  "#0288d1",
+                  "#0277bd",
+                  "#01579b",
+                  "#e57373",
+                  "#ef5350",
+                  "#f44336",
+                  "#e53935",
+                  "#d32f2f",
+                  "#c62828",
+                  "#b71c1c",
+                  "#fff3e0"
+                ];
     
     //Add a legend
     for (i = 0; i < layers.length; i++) {
@@ -137,7 +210,7 @@ map.on('load', function() {
       });
 
       if (trees.length > 0) {
-        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.Family + '</strong> family</em></p><p><em>' + trees[0].properties.Genus + ' ' + trees[0].properties.Species + '</em></p>';
       } else {
         document.getElementById('features').innerHTML = '<h2>New Haven Street Trees</h2><p>Hover over a tree!</p>';
       }
