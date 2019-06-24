@@ -113,8 +113,9 @@ map.on('load', function() {
         layers: ['nhstreettrees']
       });
       if (trees.length > 0) {
-        document.getElementById('map-overlay').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
       } else {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -128,6 +129,9 @@ map.on('load', function() {
 =======
         document.getElementById('map-overlay').innerHTML = '<h3>New Haven Street Trees</h3><p>Hover over a tree!</p>';
 >>>>>>> 101c0abdb460f50406816d20561e73cf348dfb84
+=======
+        document.getElementById('features').innerHTML = '<p>Hover over a tree!</p>';
+>>>>>>> parent of 4274eb7... Update index.html
       }
     });
     
