@@ -101,8 +101,9 @@ var map = new mapboxgl.Map({
 map.on('load', function() {
     
     // Create arrays of intervals and colors
-    var layers = ['0', '1-20', '20-90','90+'];
-    var colors = ['#ffffff','#2d81b9','#7fcdbb','#edf8b1'];
+    var layers = ['0', '1-10', '10-20','20-30','30-40','40-60','60-90+'];
+    var colors = ['#ffffff','#ffffcc','#c7e9b4','#7fcdbb','#41b6c4',
+                  '#1d91c0','#225ea8','#0c2c84'];
     
     //Add a legend
     for (i = 0; i < layers.length; i++) {
