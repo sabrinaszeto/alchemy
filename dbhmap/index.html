@@ -100,31 +100,70 @@ var map = new mapboxgl.Map({
     center: [-72.923471, 41.317190],
     zoom: 16.8
 });
-map.on('load', function() {
-// FIX var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
-//FIX var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
 
-map.addControl(new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    // limit results to USA
-    countries: 'us',
-    // further limit results to the geographic bounds representing the region of
-    // New Haven City
-    bbox: [-72.998048,41.246425,-72.860309,41.35039],
-    // apply a client side filter to further limit results to those strictly within
-    // the city of New Haven
-    filter: function (item) {
-    // returns true if item contains New Haven
-    return item.context.map(function (i) {
-    // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
-    // this example attempts to find the `region` named `New Haven`
-    return (i.id.split('.').shift() === 'region' && i.text === 'New Haven');
-    }).reduce(function (acc, cur) {
-    return acc || cur;
+map.on('load', function() {
+    
+    // Create arrays of intervals and colors
+    var layers = ['0', '1-20', '20-90','90+'];
+    var colors = ['#ffffff','#2d81b9','7fcdbb','edf8b1'];
+    
+    //Add a legend
+    for (i = 0; i < layers.length; i++) {
+      var layer = layers[i];
+      var color = colors[i];
+      var item = document.createElement('div');
+      var key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = color;
+
+      var value = document.createElement('span');
+      value.innerHTML = layer;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+    }
+    
+    // Add the information window
+    map.on('mousemove', function(e) {
+      var trees = map.queryRenderedFeatures(e.point, {
+        layers: ['nhstreettrees']
+      });
+
+      if (trees.length > 0) {
+        document.getElementById('pd').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+      } else {
+        document.getElementById('pd').innerHTML = '<p>Hover over a tree!</p>';
+      }
     });
-    },
-    mapboxgl: mapboxgl
-}));
+    
+    // Cursor
+    map.getCanvas().style.cursor = 'default';
+    
+    // Map bounds
+    map.fitBounds([[[-72.998048,41.246425],[-72.860309,41.35039]])
+    
+    // Add geocoder
+    map.addControl(new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        // limit results to USA
+        countries: 'us',
+        // further limit results to the geographic bounds representing the region of
+        // New Haven City
+        bbox: [-72.998048,41.246425,-72.860309,41.35039],
+        // apply a client side filter to further limit results to those strictly within
+        // the city of New Haven
+        filter: function (item) {
+        // returns true if item contains New Haven
+        return item.context.map(function (i) {
+        // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+        // this example attempts to find the `region` named `New Haven`
+        return (i.id.split('.').shift() === 'region' && i.text === 'New Haven');
+        }).reduce(function (acc, cur) {
+        return acc || cur;
+        });
+        },
+        mapboxgl: mapboxgl
+    }));
 
 
 });
