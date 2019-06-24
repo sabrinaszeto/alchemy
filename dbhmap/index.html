@@ -8,7 +8,6 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
-
 <style>
 body {
   margin: 0;
@@ -73,10 +72,8 @@ p {
   margin-left: 5px;
 }
 </style>
-
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.css' type='text/css' />
-
 <div id='map'></div>
 <div class='map-overlay' id='features'><h2>New Haven Street Trees</h2><div id='pd'><p>Hover over a tree!</p></div></div>
 <div class='map-overlay' id='legend'></div>
@@ -88,7 +85,7 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/fiskekart/cjx1mmcxw29e71cnwnvqq80ra?fresh=true',
 });
 map.on('load', function() {
-
+    
     // Create arrays of intervals and colors
     var layers = ['0', '1-10', '10-20','20-30','30-40','40-60','60-90+'];
     var colors = ['#ffffff','#ffffcc','#c7e9b4','#7fcdbb','#41b6c4',
@@ -124,8 +121,18 @@ map.on('load', function() {
     // Cursor
     map.getCanvas().style.cursor = 'default';
     
+    // Add geocoder
+    map.addControl(new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        // limit results to USA
+        countries: 'us',
+        // further limit results to the geographic bounds representing the region of
+        // New Haven City
+        bbox: [-72.998048,41.246425,-72.860309,41.35039]
+        },
+        mapboxgl: mapboxgl
+    }));
 });
 </script>
-
 </body>
 </html>
