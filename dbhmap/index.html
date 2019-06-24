@@ -124,7 +124,7 @@ map.on('load', function() {
     // Add the information window
     map.on('mousemove', function(e) {
       var trees = map.queryRenderedFeatures(e.point, {
-        layers: ['nhstreettrees']
+        layers: ['NewHavenStreetTrees_06182019_-8lj9yy']
       });
 
       if (trees.length > 0) {
@@ -136,9 +136,6 @@ map.on('load', function() {
     
     // Cursor
     map.getCanvas().style.cursor = 'default';
-    
-    // Map bounds
-    map.fitBounds([[-72.998048,41.246425],[-72.860309,41.35039]]);
     
     // Add geocoder
     map.addControl(new MapboxGeocoder({
