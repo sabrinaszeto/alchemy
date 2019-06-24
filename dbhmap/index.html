@@ -122,13 +122,13 @@ map.on('load', function() {
     // Add the information window
     map.on('mousemove', function(e) {
       var trees = map.queryRenderedFeatures(e.point, {
-        layers: ['NewHavenStreetTrees_06182019_-8lj9yy']
+        layers: ['nhstreettrees']
       });
 
       if (trees.length > 0) {
-        document.getElementById('GlobalID').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
+        document.getElementById('pd').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.DBH + '</strong> diameter at breast height (inches)</em></p>';
       } else {
-        document.getElementById('GlobalID').innerHTML = '<p>Hover over a tree!</p>';
+        document.getElementById('pd').innerHTML = '<p>Hover over a tree!</p>';
       }
     });
     
