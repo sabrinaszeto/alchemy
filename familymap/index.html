@@ -97,15 +97,16 @@ var map = new mapboxgl.Map({
 });
 
 // Add geocoder
-    map.addControl(new MapboxGeocoder({
+map.addControl(new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         // limit results to USA
         countries: 'us',
         // further limit results to the geographic bounds representing the region of
         // New Haven City
         bbox: [-72.998048,41.246425,-72.860309,41.35039],
+        filter: function (item) { return item.context.map(function (i) {return (i.id === 'place.11486733240152260')}).reduce(function (acc, cur) { return acc || cur })},
         mapboxgl: mapboxgl
-    }));
+   }));
 
 map.on('load', function() {
     
