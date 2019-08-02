@@ -58,7 +58,7 @@ p {
 
 #features {
   top: 0;
-  height: 100px;
+  height: 120px;
   margin-top: 20px;
   width: 250px;
 }
@@ -160,7 +160,7 @@ map.on('load', function() {
       });
 
       if (trees.length > 0) {
-        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.Family + '</strong> family</em></p><p><em>' + trees[0].properties.Genus + ' ' + trees[0].properties.Species + '</em></p>';
+        document.getElementById('features').innerHTML = '<h3><strong>' + trees[0].properties.Name + '</strong></h3><p><strong><em>' + trees[0].properties.Genus + ' ' + trees[0].properties.Species + '</strong></em></p><p><strong>' + trees[0].properties.DBH + '</strong> inches in diameter </em></p><p><em><strong><em>'+ trees[0].properties.Family + '</strong> family</em></p>';
       } else {
         document.getElementById('features').innerHTML = '<h2>New Haven Street Trees</h2><p>Hover over a tree!</p>';
       }
