@@ -4,8 +4,8 @@
     <meta charset='utf-8' />
     <title>New Haven Street Trees by Genus</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.0/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
 
@@ -104,8 +104,8 @@ border-radius: 3px;
 
 </style>
 
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.min.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.3.0/mapbox-gl-geocoder.css' type='text/css' />
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />
 
 <div id='map'></div>
 <div class='map-overlay' id='features'><h2>New Haven Street Trees</h2><div id='pd'><p>Hover over a tree!</p></div></div>
@@ -121,11 +121,10 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/fiskekart/cjx1oh6nd00w71cpfemid4veo?fresh=true',
 });
 
-// Add filter input for genus
-var filterInput = document.getElementById('filter-input');
+map.on('load', function() {
 
-// Add geocoder
-map.addControl(new MapboxGeocoder({
+    // Add geocoder
+    map.addControl(new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         // limit results to USA
         countries: 'us',
@@ -135,10 +134,86 @@ map.addControl(new MapboxGeocoder({
         mapboxgl: mapboxgl
     }));
 
-map.on('load', function() {
-    
+    // Will contain a list used to filter against.
+    var layerIDs = ["Abies",
+                    "Acer",
+                    "Aesculus",
+                    "Ailanthus",
+                    "Amelanchier",
+                    "Betula",
+                    "Carpinus",
+                    "Carya",
+                    "Castanea",
+                    "Catalpa",
+                    "Cedar",
+                    "Celtis",
+                    "Cercidiphyllum",
+                    "Cercis",
+                    "Chamaecyparis",
+                    "Cladrastis",
+                    "Cornus",
+                    "Corylus",
+                    "Crataegus",
+                    "Cryptomeria",
+                    "Cupressocyparis",
+                    "Eucommia",
+                    "Fagus",
+                    "Fraxinus",
+                    "Ginkgo",
+                    "Gleditsia",
+                    "Gymnocladus",
+                    "Halesia",
+                    "Hamamelis",
+                    "Hibiscus",
+                    "Ilex",
+                    "Juglans",
+                    "Juniperus",
+                    "Koelreuteria",
+                    "Larix",
+                    "Liquidambar",
+                    "Liriodendron",
+                    "Maackia",
+                    "Magnolia",
+                    "Malus",
+                    "Metasequoia",
+                    "Mimosa",
+                    "Morus",
+                    "Nyssa",
+                    "Ostrya",
+                    "Oxydendrum",
+                    "Parrotia",
+                    "Phellodendron",
+                    "Picea",
+                    "Pinus",
+                    "Platanus",
+                    "Platycladus",
+                    "Populus",
+                    "Prunus",
+                    "Pseudotsuga",
+                    "Pyrus",
+                    "Quercus",
+                    "Rhus",
+                    "Robinia",
+                    "Salix",
+                    "Sassafras",
+                    "Sorbus",
+                    "Stewartia",
+                    "Styphnolobium",
+                    "Styrax",
+                    "Syringa",
+                    "Taxodium",
+                    "Taxus",
+                    "Thuja",
+                    "Tilia",
+                    "Tsuga",
+                    "Ulmus",
+                    "Zelkova"]
+
+    // Add filter input for genus
+    var filterInput = document.getElementById('filter-input');
+
     // Create arrays of intervals and colors
-    var layers =  [
+    var legendLayers =  [
                   "Acer",
                   "Quercus",
                   "Platanus",
@@ -165,8 +240,8 @@ map.on('load', function() {
                   ]
     
     //Add a legend
-    for (i = 0; i < layers.length; i++) {
-      var layer = layers[i];
+    for (i = 0; i < legendLayers.length; i++) {
+      var legendLayer = legendLayers[i];
       var color = colors[i];
       var item = document.createElement('div');
       var key = document.createElement('span');
@@ -174,12 +249,12 @@ map.on('load', function() {
       key.style.backgroundColor = color;
 
       var value = document.createElement('span');
-      value.innerHTML = layer;
+      value.innerHTML = legendLayer;
       item.appendChild(key);
       item.appendChild(value);
       legend.appendChild(item);
     }
-    
+
     // Add the information window
     map.on('mousemove', function(e) {
       var trees = map.queryRenderedFeatures(e.point, {
@@ -196,22 +271,20 @@ map.on('load', function() {
     // Cursor
     map.getCanvas().style.cursor = 'default';
 
-    // Filter items
+    /*
+
+    // Filter layers
     filterInput.addEventListener('keyup', function(e) {
-    var trees = map.queryRenderedFeatures(e.point, {
-        layers: ['nhstreettrees']
+      // If the input value matches a layerID set
+      // it's visibility to 'visible' or else hide it.
+      var value = e.target.value.trim().toLowerCase();
+      layerIDs.forEach(function(layerID) {
+      map.setLayoutProperty(layerID, 'visibility',
+      layerID.indexOf(value) > -1 ? 'visible' : 'none');
       });  
-    // If the input value matches a layerID set
-    // it's visibility to 'visible' or else hide it.
-    var value = e.target.value.trim().toLowerCase();
-    trees.forEach(function(feature) {
-    map.setLayoutProperty(feature, 'visibility',
-    feature.indexOf(value) > -1 ? 'visible' : 'none');
-    });
-});
 
+      */
 });
-
 </script>
 
 </body>
